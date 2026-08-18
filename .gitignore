@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+secrets/
+dbt/secrets/
+dbt/secrets/
+data/

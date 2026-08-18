@@ -1,0 +1,9 @@
+bs4
+pandas
+requests
+sqlalchemy
+psycopg2-binary
+pyarrow
+snowflake-connector-python
+boto3
+python-dotenv
