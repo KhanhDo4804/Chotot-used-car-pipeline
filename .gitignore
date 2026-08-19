@@ -8,3 +8,4 @@ secrets/
 dbt/secrets/
 dbt/secrets/
 data/
+.vscode/

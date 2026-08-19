@@ -46,7 +46,7 @@ with DAG(
             "cd /opt/airflow/project/dbt && "
             "dbt build --profiles-dir . "
             "--select stg_car_details int_car_details_latest "
-            "car_details_snapshot fct_listing_events"
+            "car_details_snapshot dim_car_current fct_listing_events"
         ),
         cwd=PROJECT_ROOT,
     )
