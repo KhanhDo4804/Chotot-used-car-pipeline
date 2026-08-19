@@ -5,6 +5,7 @@
         target_schema='snapshots',
         unique_key='listing_id',
         strategy='check',
+        invalidate_hard_deletes=True,
         check_cols=[
             'price',
             'address',
@@ -32,6 +33,11 @@ select
     body_type,
     seats,
     loaded_at
-from {{ ref('int_car_details_latest') }}
+from {{ ref('int_car_details_latest') }} as details
+where exists (
+    select 1
+    from {{ ref('int_current_listing_ids') }} as active
+    where active.listing_id = details.listing_id
+)
 
 {% endsnapshot %}

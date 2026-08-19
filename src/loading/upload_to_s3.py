@@ -6,12 +6,18 @@ import boto3
 from dotenv import load_dotenv
 
 DEFAULT_PARQUET_FILE = "data/data_cleaning/cleaned_car_details.parquet"
+ACTIVE_LISTINGS_FILE = "data/data_cdc/active_listings.parquet"
 load_dotenv()
 
 
 def get_object_key():
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return f"raw/car_details/cleaned_car_details_{timestamp}.parquet"
+
+
+def get_active_listings_object_key():
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return f"raw/active_listings/active_listings_{timestamp}.parquet"
 
 
 def upload_parquet_to_s3(
@@ -36,5 +42,18 @@ def upload_parquet_to_s3(
     print(f"Uploaded: s3://{bucket_name}/{object_key}")
 
 
+def upload_active_listings_to_s3(
+    parquet_file=ACTIVE_LISTINGS_FILE,
+    bucket_name=None,
+    object_key=None,
+):
+    return upload_parquet_to_s3(
+        parquet_file=parquet_file,
+        bucket_name=bucket_name,
+        object_key=object_key or get_active_listings_object_key(),
+    )
+
+
 if __name__ == "__main__":
     upload_parquet_to_s3()
+    upload_active_listings_to_s3()

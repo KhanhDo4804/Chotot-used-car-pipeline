@@ -13,6 +13,12 @@ with DAG(
     tags=["chotot", "cdc"],
 ) as dag:
 
+    crawl_active_listings = BashOperator(
+        task_id="crawl_active_listings",
+        bash_command="python src/ingestion/crawl_active_listings.py",
+        cwd=PROJECT_ROOT,
+    )
+
     crawl = BashOperator(
         task_id="crawl",
         bash_command="python src/ingestion/crawl_cdc.py",
@@ -40,15 +46,33 @@ with DAG(
         cwd=PROJECT_ROOT,
     )
 
+    copy_raw_active_listings = BashOperator(
+        task_id="copy_raw_active_listings",
+        bash_command=(
+            "cd /opt/airflow/project/dbt && "
+            "dbt run-operation copy_raw_active_listings --profiles-dir ."
+        ),
+        cwd=PROJECT_ROOT,
+    )
+
     dbt_build = BashOperator(
         task_id="dbt_build",
         bash_command=(
             "cd /opt/airflow/project/dbt && "
             "dbt build --profiles-dir . "
-            "--select stg_car_details int_car_details_latest "
+            "--select stg_car_details stg_active_listings "
+            "int_car_details_latest int_current_listing_ids "
             "car_details_snapshot dim_car_current fct_listing_events"
         ),
         cwd=PROJECT_ROOT,
     )
 
-    crawl >> clean >> upload_to_s3 >> copy_raw >> dbt_build
+    (
+        crawl_active_listings
+        >> crawl
+        >> clean
+        >> upload_to_s3
+        >> copy_raw
+        >> copy_raw_active_listings
+        >> dbt_build
+    )

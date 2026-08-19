@@ -40,6 +40,7 @@ FROM (
         $1:"crawled_at"::TIMESTAMP_NTZ
     FROM @CHOTOT_DB.RAW.CHOTOT_S3_STAGE
 )
+PATTERN = '.*raw/car_details/.*[.]parquet'
 FILE_FORMAT = (
     FORMAT_NAME = 'CHOTOT_DB.RAW.PARQUET_FORMAT'
 );
