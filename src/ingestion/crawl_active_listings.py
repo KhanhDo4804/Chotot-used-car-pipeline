@@ -64,7 +64,7 @@ def extract_listing_links(html):
 
 def crawl_active_listings(n_pages=N_PAGES, output_path=OUTPUT_PATH):
     session = build_session()
-    crawled_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    crawled_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     listings = {}
     consecutive_empty_pages = 0
 

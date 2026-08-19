@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS CHOTOT_DB.RAW.ACTIVE_LISTINGS_RAW (
     listing_id STRING,
     link STRING,
-    crawled_at TIMESTAMP_NTZ,
+    crawled_at STRING,
     loaded_at TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
 )
 
@@ -22,7 +22,7 @@ FROM (
     SELECT
         $1:"listing_id"::STRING,
         $1:"link"::STRING,
-        $1:"crawled_at"::TIMESTAMP_NTZ
+        $1:"crawled_at"::STRING
     FROM @CHOTOT_DB.RAW.CHOTOT_S3_STAGE
 )
 PATTERN = '.*raw/active_listings/.*[.]parquet'
