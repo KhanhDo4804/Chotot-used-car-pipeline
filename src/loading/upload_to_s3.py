@@ -17,7 +17,7 @@ def get_object_key():
 
 def get_active_listings_object_key():
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return f"raw/active_listings/active_listings_{timestamp}.parquet"
+    return f"raw/active_listings_v2/active_listings_{timestamp}.parquet"
 
 
 def upload_parquet_to_s3(

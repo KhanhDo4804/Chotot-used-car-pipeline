@@ -25,7 +25,7 @@ FROM (
         $1:"crawled_at"::STRING
     FROM @CHOTOT_DB.RAW.CHOTOT_S3_STAGE
 )
-PATTERN = '.*raw/active_listings/.*[.]parquet'
+PATTERN = '.*raw/active_listings_v2/.*[.]parquet'
 FILE_FORMAT = (
     FORMAT_NAME = 'CHOTOT_DB.RAW.PARQUET_FORMAT'
 )
